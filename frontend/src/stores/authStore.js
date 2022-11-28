@@ -7,6 +7,7 @@ const authStore = create((set) => ({
     isCheckAll: false,
     isCheck: [],
     loggedUser: null,
+    isBlocked: null,
 
     loginForm: {
         email: "",
@@ -26,6 +27,7 @@ const authStore = create((set) => ({
             isCheckAll: !isCheckAll,
             isCheck: users.map((li) => li._id),
         });
+
         if (isCheckAll) {
             set({ isCheck: [] });
         }
@@ -139,42 +141,46 @@ const authStore = create((set) => ({
 
     deleteUsers: async () => {
         const { fetchUsers, checkAuth, isCheck } = authStore.getState();
-        isCheck.forEach(async (id) => {
-            await axios.delete(`/users/${id}`);
+        isCheck.forEach((id) => {
+            axios.delete(`/users/${id}`);
+            checkAuth();
+            fetchUsers();
         });
-        checkAuth();
-        fetchUsers();
     },
 
     blockUsers: async () => {
         const { checkAuth, fetchUsers, isCheck, loggedUser } =
             authStore.getState();
-        fetchUsers();
-        isCheck.forEach(async (id) => {
+        // fetchUsers();
+        isCheck.map(async (id) => {
             await axios.put(`/users/${id}`, { isBlocked: true });
+            checkAuth();
+            fetchUsers();
         });
-        fetchUsers();
-        if (!loggedUser._id) {
+        // fetchUsers();
+        if (!loggedUser) {
             return;
         }
-        fetchUsers();
         if (isCheck.includes(loggedUser._id)) {
+            // fetchUsers();
             await axios.get("/logout");
             set({ loggedIn: false });
 
             checkAuth();
             set({ isCheck: [] });
         }
-        checkAuth();
+        // checkAuth();
+        // fetchUsers();
     },
 
     unblockUsers: () => {
         const { fetchUsers, isCheck } = authStore.getState();
-        fetchUsers();
+        // fetchUsers();
         isCheck.map(async (id) => {
-            await axios.put(`/users/${id}`, { isBlocked: false });
+            axios.put(`/users/${id}`, { isBlocked: false });
+            fetchUsers();
         });
-        fetchUsers();
+        // fetchUsers();
     },
 }));
 
