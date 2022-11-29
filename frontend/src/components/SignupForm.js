@@ -61,7 +61,7 @@ const SignupForm = () => {
                     <button type="submit" className="btn btn-primary mb-2 w-75">
                         Signup
                     </button>
-                    <Link className="mb-2" to="/signup">
+                    <Link className="mb-2" to="/login">
                         Already have an account?
                     </Link>
                 </div>
