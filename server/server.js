@@ -26,7 +26,7 @@ app.post("/login", usersController.login);
 app.get("/logout", usersController.logout);
 app.put("/users/:id", requireAuth, usersController.updateUser);
 app.delete("/users/:id", requireAuth, usersController.deleteUser);
-app.get("/check-auth", requireAuth, usersController.checkAuth);
+app.get("/check-auth", usersController.checkAuth);
 
 app.listen(process.env.PORT || 5000, () => {
     console.log("Port:" + process.env.PORT);
