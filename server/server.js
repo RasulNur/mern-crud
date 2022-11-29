@@ -1,6 +1,4 @@
-// if (process.env.NODE_ENV != "production") {
 require("dotenv").config();
-// }
 
 const express = require("express");
 const cors = require("cors");
@@ -23,7 +21,6 @@ app.use(
 connectToDb();
 
 app.get("/users", requireAuth, usersController.fetchUsers);
-// app.get("/users/:id", usersController.fetchUser);
 app.post("/signup", usersController.signup);
 app.post("/login", usersController.login);
 app.get("/logout", usersController.logout);
