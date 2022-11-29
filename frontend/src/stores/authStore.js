@@ -48,6 +48,7 @@ const authStore = create((set) => ({
         const res = await axios.get("/users");
 
         set({ users: res.data.users });
+        console.log(res);
     },
 
     fetchUser: async () => {
